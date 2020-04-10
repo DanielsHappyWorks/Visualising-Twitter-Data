@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def get_data_frame():
-    columns = ['id', 'creation_time', 'retweet_count', 'favorite_count', 'source', 'user_name', 'user_location', 'content', 'basic_content']
+    columns = ['id', 'creation_time', 'retweet_count', 'favorite_count', 'source', 'user_name', 'user_location', 'content', 'basic_content', 'emotion', 'polarity']
     return pd.read_csv("./data.csv", names=columns, encoding='utf8', delimiter="~@#@~", engine='python')
 
 
