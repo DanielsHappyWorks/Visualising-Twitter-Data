@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 
 
 class Tweet:
@@ -36,8 +37,8 @@ class Tweet:
 
     @staticmethod
     def process_content(text):
-        text = text.replace('\n', '')
-        text = text.replace('\t', '')
+        text = text.replace('\n', ' ')
+        text = text.replace('\t', ' ')
         return text
 
     @staticmethod
@@ -57,3 +58,18 @@ class Tweet:
         text = text.replace('Twitter for ', '')
         text = text.replace('\t', '')
         return text
+
+    @staticmethod
+    def get_columns():
+        return ['id', 'creation_time', 'retweet_count', 'favorite_count', 'source', 'user_name', 'user_location',
+                'content', 'basic_content', 'emotion', 'polarity']
+
+    def get_as_data_frame(self):
+        df = pd.DataFrame([(self.id, self.creation_time, self.retweet_count, self.favorite_count, self.source,
+                            self.user_name, self.user_location, self.content, self.basic_content, "NA", "NA")],
+                          columns=Tweet.get_columns())
+        return df
+
+    def get_as_data_touple(self):
+        return (self.id, self.creation_time, self.retweet_count, self.favorite_count, self.source,
+                            self.user_name, self.user_location, self.content, self.basic_content, "NA", "NA")
