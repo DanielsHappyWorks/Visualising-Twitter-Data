@@ -105,6 +105,7 @@ def run_classifier(x, y, feature_range, classifier, name,  original_df):
 
     x_train_org, x_test_org, y_train_org, y_test_org = get_test_data(data_frame.drop(['polarity'], axis=1), data_frame['polarity'])
     test_df = x_test_org
+    test_df['polarity'] = y_test_org
     test_df['Vader Pred'] = vader_test
     test_df['Classifier Pred'] = pipeline.predict(x_test)
     test_df.to_pickle(dir + "test_df.pkl")
