@@ -45,7 +45,6 @@ def graph_model_data(df, dir, prefix, hasPolarity):
     graph_dataframe_group_as_stacked_bar_percentage(df, 'Vader Pred', 'Classifier Pred', dir, prefix)
 
     fc = df['polarity'].value_counts()
-    print(fc.keys())
     keys, val = zip(*fc.items())
     plot = plt.subplot(131, label="Manual")
     plot.set_title("Manual")
@@ -53,13 +52,11 @@ def graph_model_data(df, dir, prefix, hasPolarity):
     plot = plt.subplot(132, label="Classifier Pred")
     plot.set_title("Classifier Pred")
     fc =df['Classifier Pred'].value_counts()
-    print(fc.keys())
     keys, val = zip(*fc.items())
     plt.bar(keys, val)
     plot = plt.subplot(133, label="Vader Pred")
     plot.set_title("Vader Pred")
     fc =df['Vader Pred'].value_counts()
-    print(fc.keys())
     keys, val = zip(*fc.items())
     plt.bar(keys, val)
     plt.suptitle('Tweet predictions for the '+ prefix + ' data set')
@@ -72,30 +69,40 @@ def graph_model_data(df, dir, prefix, hasPolarity):
 
 def run_graph_original_data():
     dir = os.listdir("../output/model_data")[0]
-    print(dir)
     # graph for full data
     df = pd.read_pickle("../output/model_data/" + dir + "/full_df.pkl")
-    graph_tweet_data(df, dir, "original")
+    graph_tweet_data(df, "original_data/", "original")
     # graph for test data
     df = pd.read_pickle("../output/model_data/" + dir + "/test_df.pkl")
-    graph_tweet_data(df, dir, "test")
+    graph_tweet_data(df, "original_data/", "test")
 
 
 def run_graph_model_data():
+    frames_full = []
+    frames_test = []
     for dir in os.listdir("../output/model_data"):
-        print(dir)
         df = pd.read_pickle("../output/model_data/" + dir + "/full_df.pkl")
-        graph_model_data(df, dir, "original", True)
+        graph_model_data(df, "model/" + dir, "original", True)
+        frames_full.append(df)
         df = pd.read_pickle("../output/model_data/" + dir + "/test_df.pkl")
-        graph_model_data(df, dir, "test", True)
+        graph_model_data(df, "model/" + dir, "test", True)
+        frames_test.append(df)
+    result_full = pd.concat(frames_full)
+    result_test = pd.concat(frames_test)
+    graph_model_data(result_full, "model/all_model", "all_model_full", True)
+    graph_model_data(result_test, "model/all_model", "all_model_test", True)
 
 
 def run_graph_unseen_data():
+    frames = []
     for dir in os.listdir("../output/unseen_data"):
-        print(dir)
         df = pd.read_pickle("../output/unseen_data/" + dir + "/df.pkl")
-        graph_tweet_data(df, dir, "unseen")
-        graph_model_data(df, dir, "unseen", False)
+        graph_tweet_data(df, "unseen/" + dir, "unseen")
+        graph_model_data(df, "unseen/" + dir, "unseen", False)
+        frames.append(df)
+    result = pd.concat(frames)
+    graph_tweet_data(result, "unseen/all_unseen", "all_unseen")
+    graph_model_data(result, "unseen/all_unseen", "all_unseen", False)
 
 
 # run through original data plots output files
@@ -104,3 +111,11 @@ run_graph_original_data()
 run_graph_model_data()
 # run through all unseen data output files
 run_graph_unseen_data()
+
+# I think, in the current climate, that a static visualisation is perfectly acceptable now and I would urge everyone not to worry or stress overly about it.
+#Look at the various links I have provided and, based on the data, provide what you think are the appropriate visualisations.
+#For example, if the data is hierarchical, it might be good to use a treemap or sunburst chart.
+#If there are temporal aspects, then a scatterplot would be appropriate.
+#If there are clusters, then a scatterplot or SOM would be appropriate, etc.
+#For flows, a graph/tree visualisation could be used.
+#You can also use word clouds, bubble clusters, etc.
