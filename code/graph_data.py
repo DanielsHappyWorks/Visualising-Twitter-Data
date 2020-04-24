@@ -23,9 +23,9 @@ def graph_dataframe_group_as_stacked_bar_percentage(df, a, b, dir, prefix):
     current_handles, _ = plt.gca().get_legend_handles_labels()
     reversed_handles = reversed(current_handles)
 
-    labels = reversed(df[a].unique())
+    #labels = reversed(df[a].unique())
 
-    plt.legend(reversed_handles, labels, loc='lower right', title=b)
+   # plt.legend(reversed_handles, labels, loc='lower right', title=b)
     plt.suptitle(a + " vs " + b + " as a % for the " + prefix + " data set")
 
     path = '../output/graphs/' + dir + "/"
@@ -106,6 +106,7 @@ def graph_tree_map(df, col, cols, dir, prefix):
     path = '../output/graphs/' + dir + "/"
     create_path(path)
     fig.write_image(path + prefix + "_" + col + "_treemap.svg")
+    fig.write_image(path + prefix + "_" + col + "_treemap.png")
 
     fig = px.sunburst(
         df_rpl_epth,
@@ -114,6 +115,7 @@ def graph_tree_map(df, col, cols, dir, prefix):
     path = '../output/graphs/' + dir + "/"
     create_path(path)
     fig.write_image(path + prefix + "_" + col + "_sunburst.svg")
+    fig.write_image(path + prefix + "_" + col + "_sunburst.png")
     #fig.show()
 
 
@@ -121,13 +123,13 @@ def graph_word_cloud(df, col, dir, prefix):
     wordcloud = WordCloud(width=800, height=800,
                           background_color='white',
                           stopwords=set(STOPWORDS),
-                          min_font_size=10).generate(" ".join(df[col].to_list()))
+                          min_font_size=12).generate(" ".join(df[col].to_list()))
     plt.imshow(wordcloud)
     plt.axis('off')
 
     path = '../output/graphs/' + dir + "/"
     create_path(path)
-    plt.savefig(path + prefix + "_" + col + "_wordcloud.png")
+    plt.savefig(path + prefix + "_" + col + "_wordcloud.png", dpi=300)
     plt.close()
 
 
